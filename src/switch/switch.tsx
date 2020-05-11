@@ -2,10 +2,12 @@
     Bindings for Switch Component
     - Allows for React Fragment support
         - https://github.com/ReactTraining/react-router/issues/5785
+    - Creates a RouteIndex and saves to Treble Store
 */
 
-import React, {Fragment} from 'react';
-import { Switch } from 'react-router-dom';
+import React, {Fragment, Suspense, useEffect} from 'react';
+import { Switch as ReactRouterSwitch } from 'react-router-dom';
+import {useTreble, updateStore} from 'treble-gsm';
 
 const flatten = (target: any, children: any) => {
     React.Children.forEach(children, child => {
@@ -19,9 +21,48 @@ const flatten = (target: any, children: any) => {
     });
   }
 
-export default function FragmentSupportingSwitch({children}: {children: any}) {
+function FragmentSupportingSwitch(props: any) {
   const flattenedChildren: any = [];
-  flatten(flattenedChildren, children);
-  return React.createElement.apply(React, [Switch, null].concat(flattenedChildren) as any);
+  flatten(flattenedChildren, props.children);
+  return React.createElement.apply(React, [ReactRouterSwitch, null].concat(flattenedChildren) as any);
+}
+
+interface Props{
+  lazy?: boolean,
+  children: any,
+  [key: string]: any
+}
+export default function Switch(props: Props){
+  const [{}, dispatch] = useTreble();
+
+  //creates a routeIndex for Link prefetching
+  const routeIndex = props.children.map((child: any) => {
+    const {path, render, component,exact, prefetch} = child.props;
+    return {
+      path: path || null,
+      exact: exact || null,
+      component: (render !== undefined) ? prefetch.comp : component,
+      prefetch: prefetch || null
+    }
+    
+  })
+ 
+  //save routeIndex to Store
+  useEffect(() => {
+      updateStore('updateTrebleFetchRouteIndex', routeIndex, dispatch);
+  },[]);
+
+  return(
+    <>
+      {
+        //allows for lazy components in Routes
+        (props.lazy) ? 
+        <Suspense fallback={''}>
+          <FragmentSupportingSwitch {...props}/>
+        </Suspense> : 
+        <FragmentSupportingSwitch {...props}/>
+      }
+    </>
+  )
 }
 

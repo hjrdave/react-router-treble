@@ -1,3 +1,3 @@
-import Router from './router';
+import BrowserRouter from './browser-router';
 
-export default Router;
+export default BrowserRouter;

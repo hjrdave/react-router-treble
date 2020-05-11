@@ -25,18 +25,19 @@ export default function Link(props: Props){
       const matchingRoute = routes.find((route) =>
         matchPath(path, {
           path: route.path,
-          exact: route.exact
+          exact: (route.exact !== undefined) ? route.exact : false
         })
       );
       return matchingRoute ? matchingRoute.component : null;
     };
     
-    //preload Route chunck on mouseover
+    //preload Route chunk on mouseover
     const preloadRouteComponent = (path: string, globalCache: {path: string, exact: boolean, component: JSX.Element}[]) => {
       const component = findComponentForRoute(path, globalCache);
       if (component && (component as any).preload) {
         (component as any).preload();
       }
+      
     };
 
     //prefetch specified api routes on mouseover
