@@ -1,6 +1,6 @@
 /*
-  Treble Link
-  Wrapper around React Router Link to allow for prefetching dynamic imports and api routes.
+  Bindings for the Link Component
+  - allows for prefetching dynamic imports and api routes.
 */
 import React from 'react';
 import { matchPath, Link as ReactRouterLink } from "react-router-dom";
