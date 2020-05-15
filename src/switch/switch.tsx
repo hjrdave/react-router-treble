@@ -37,11 +37,11 @@ export default function Switch(props: Props){
 
   //creates a routeIndex for Link prefetching
   const routeIndex = props.children.map((child: any) => {
-    const {path, render, component,exact, prefetch} = child.props;
+    const {path, exact, prefetch, children} = child.props;
     return {
       path: path || null,
       exact: exact || null,
-      component: (render !== undefined) ? prefetch.comp : component,
+      component: children.type || prefetch.comp|| null,
       prefetch: prefetch || null
     }
     
@@ -51,16 +51,15 @@ export default function Switch(props: Props){
   useEffect(() => {
       updateStore('updateTrebleFetchRouteIndex', routeIndex, dispatch);
   },[]);
-
+  React.useEffect(() => {
+    console.log(props?.lazy)
+  },[props]);
   return(
     <>
       {
-        //allows for lazy components in Routes
-        (props.lazy) ? 
         <Suspense fallback={''}>
           <FragmentSupportingSwitch {...props}/>
-        </Suspense> : 
-        <FragmentSupportingSwitch {...props}/>
+        </Suspense>
       }
     </>
   )
