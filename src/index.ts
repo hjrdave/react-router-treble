@@ -1,4 +1,5 @@
-
+//Custom
+import {ReactRouterStore} from './extend-store';
 //Bindings
 import Link from './link';
 import Route from './route';
@@ -24,6 +25,8 @@ import {
 } from 'react-router-dom';
 
 export {
+    //custom
+    ReactRouterStore,
 
     //Bindings
     Link, 
