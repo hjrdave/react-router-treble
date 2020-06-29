@@ -33,7 +33,7 @@ interface Props {
   [key: string]: any
 }
 export default function Switch(props: Props) {
-  const [{ }, dispatch, Store] = useTreble();
+  const [{ }, Store] = useTreble();
 
   //creates a routeIndex for Link prefetching
   const routeIndex = props.children.map((child: any) => {

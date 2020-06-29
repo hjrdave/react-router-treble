@@ -18,7 +18,7 @@ interface Props{
 export default function Link(props: Props){
     const {to, prefetch: prefetchProp, children} = props;
 
-    const [{trebleFetchRouteIndex, trebleFetchCache}, dispatch, Store] = useTreble();
+    const [{trebleFetchRouteIndex, trebleFetchCache}, Store] = useTreble();
 
     //find the component attached to Route
     const findComponentForRoute = (path: string, routes: {path: string, exact: boolean, component: JSX.Element}[]) => {
