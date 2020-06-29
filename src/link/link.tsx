@@ -4,7 +4,7 @@
 */
 import React from 'react';
 import { matchPath, Link as ReactRouterLink } from "react-router-dom";
-import {useTreble, updateStore} from "treble-gsm";
+import {useTreble} from "treble-gsm";
 import {prefetch} from 'treble-fetch';
 
 
@@ -18,7 +18,7 @@ interface Props{
 export default function Link(props: Props){
     const {to, prefetch: prefetchProp, children} = props;
 
-    const [{trebleFetchRouteIndex, trebleFetchCache}, dispatch] = useTreble();
+    const [{trebleFetchRouteIndex, trebleFetchCache}, dispatch, Store] = useTreble();
 
     //find the component attached to Route
     const findComponentForRoute = (path: string, routes: {path: string, exact: boolean, component: JSX.Element}[]) => {
@@ -73,7 +73,7 @@ export default function Link(props: Props){
         let resolvedRoutes = await cachedData;
 
         //update treble fetch cache in treble store
-        updateStore('updateTrebleFetchCache', resolvedRoutes[0], dispatch);
+        Store.update('updateTrebleFetchCache', resolvedRoutes[0]);
       }
     }
     return(

@@ -1,13 +1,14 @@
 {
   "name": "react-router-treble",
-  "version": "1.0.0-alpha.5",
+  "version": "1.1.0",
   "description": "TrebleGSM bindings for React-Router",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
     "start": "babel --watch src --out-dir lib --extensions .ts,.tsx",
     "build": "babel src --out-dir lib --extensions .ts,.tsx && tsc --emitDeclarationOnly",
-    "tsc:watch": "tsc --watch --emitDeclarationOnly"
+    "tsc:watch": "tsc --watch --emitDeclarationOnly",
+    "publish": "npm run build & npm publish"
   },
   "files": [
     "lib",

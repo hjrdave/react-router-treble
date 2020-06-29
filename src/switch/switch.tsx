@@ -7,7 +7,7 @@
 
 import React, { Fragment, Suspense, useEffect } from 'react';
 import { Switch as ReactRouterSwitch, useHistory, useLocation, useParams } from 'react-router-dom';
-import { useTreble, updateStore } from 'treble-gsm';
+import { useTreble } from 'treble-gsm';
 
 const flatten = (target: any, children: any) => {
   React.Children.forEach(children, child => {
@@ -33,7 +33,7 @@ interface Props {
   [key: string]: any
 }
 export default function Switch(props: Props) {
-  const [{ }, dispatch] = useTreble();
+  const [{ }, dispatch, Store] = useTreble();
 
   //creates a routeIndex for Link prefetching
   const routeIndex = props.children.map((child: any) => {
@@ -49,28 +49,29 @@ export default function Switch(props: Props) {
 
   //save routeIndex to Store
   useEffect(() => {
-    updateStore('updateTrebleFetchRouteIndex', routeIndex, dispatch);
+    Store.update('updateTrebleFetchRouteIndex', routeIndex);
   }, []);
 
   //save React Router data to global state
   const location = useLocation();
   const history = useHistory();
-  const params = useParams();
+  //const params = useParams();
 
   //Location
   useEffect(() => {
-    updateStore('updateReactRouterLocation', location, dispatch);
+    Store.update('updateReactRouterLocation', location);
   }, [location]);
 
   //History
   useEffect(() => {
-    updateStore('updateReactRouterHistory', history, dispatch);
-  }, [history]);
+    Store.update('updateReactRouterHistory', history);
+  }, [location]);
 
   //Params
-  useEffect(() => {
-    updateStore('updateReactRouterParams', params, dispatch);
-  }, [params]);
+  // useEffect(() => {
+  //   const params = useParams();
+  //   updateStore('updateReactRouterParams', params, dispatch);
+  // }, [location]);
 
   return (
     <>
